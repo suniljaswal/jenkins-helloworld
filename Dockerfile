@@ -41,6 +41,12 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY runner.sh /runner.sh
 RUN chmod +x /runner.sh
 
+# Helathcheck
+
+HEALTHCHECK --interval=5s \
+            --timeout=5s \
+            CMD curl -f http://127.0.0.1:8000 || exit 1
+
 # Expose ports
 EXPOSE 80
 
