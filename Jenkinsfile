@@ -3,7 +3,7 @@ pipeline {
     
     stages {
         stage('Fetch dependencies') {
-        /* This stage pulls the latest nginx image from
+        /* This stage pulls the latest image from
            Dockerhub */
             steps {
                 sh 'sudo docker pull karthequian/helloworld:latest'
