@@ -6,14 +6,14 @@ pipeline {
         /* This stage pulls the latest image from
            Dockerhub */
             steps {
-                sh 'sudo docker pull karthequian/helloworld:latest'
+                sh 'sudo podman pull karthequian/helloworld:latest'
           }
         }
         stage('Build docker image') {
         /* This stage builds the actual image; synonymous to
            docker build on the command line */
             steps {
-            sh "sudo docker build . -t customapp:1"
+            sh "sudo podman build . -t customapp:1"
             }    
         }
         stage('Test image') {
@@ -28,8 +28,8 @@ pipeline {
             docker image to our OCI private Registry*/
         steps {
             sh "sudo docker login -u 'bmsondaagodo/nothingelse007@gmail.com' -p 'z<){[[Y41Ffxwo-D;kuy' 'ap-mumbai-1.ocir.io'"
-            sh "sudo docker tag customapp:1 ap-mumbai-1.ocir.io/bmsondaagodo/customapp:custom"
-            sh 'sudo docker push ap-mumbai-1.ocir.io/bmsondaagodo/customapp:custom'
+            sh "sudo podman tag customapp:1 ap-mumbai-1.ocir.io/bmsondaagodo/customapp:custom"
+            sh 'sudo podman push ap-mumbai-1.ocir.io/bmsondaagodo/customapp:custom'
             
            }
          } 
