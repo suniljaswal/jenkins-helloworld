@@ -1,57 +1,8 @@
-############################################################
-# Dockerfile to build Nginx Installed Containers
-# Based on Ubuntu
-############################################################
+FROM quay.io/redhattraining/httpd-parent
+EXPOSE 8080
+RUN sed -i "s/Listen 80/Listen 8080/g" /etc/httpd/conf/httpd.conf && \
+    sed -i "s/#ServerName www.example.com:80/ServerName 0.0.0.0:8080/g" /etc/httpd/conf/httpd.conf && \
+    chgrp -R 0 /var/log/httpd  /var/run/httpd && \
+    chmod -R g=u /var/log/httpd /var/run/httpd
 
-
-# Set the base image to Ubuntu
-FROM ubuntu
-
-# File Author / Maintainer
-MAINTAINER Karthik Gaekwad
-
-# Install Nginx
-
-# Add application repository URL to the default sources
-# RUN echo "deb http://archive.ubuntu.com/ubuntu/ raring main universe" >> /etc/apt/sources.list
-USER root
-# Update the repository
-RUN sudo apt-get update
-
-# Install necessary tools
-RUN sudo apt-get install -y vim wget dialog net-tools
-
-RUN sudo apt-get install -y nginx
-
-# Remove the default Nginx configuration file
-RUN sudo rm -v /etc/nginx/nginx.conf
-
-# Copy a configuration file from the current directory
-ADD nginx.conf /etc/nginx/
-
-RUN mkdir /etc/nginx/logs
-
-# Add a sample index file
-ADD index.html /www/data/
-
-# Append "daemon off;" to the beginning of the configuration
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
-# Create a runner script for the entrypoint
-COPY runner.sh /runner.sh
-RUN chmod +x /runner.sh
-
-# Helathcheck
-
-HEALTHCHECK --interval=5s \
-            --timeout=5s \
-            CMD curl -f http://127.0.0.1:8000 || exit 1
-
-# Expose ports
-EXPOSE 80
-
-ENTRYPOINT ["/runner.sh"]
-
-# Set the default command to execute
-# when creating a new container
-CMD ["nginx"]
+USER 1001
