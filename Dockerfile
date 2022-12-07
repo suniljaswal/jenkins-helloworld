@@ -16,15 +16,15 @@ MAINTAINER Karthik Gaekwad
 # RUN echo "deb http://archive.ubuntu.com/ubuntu/ raring main universe" >> /etc/apt/sources.list
 USER root
 # Update the repository
-RUN apt-get update
+RUN sudo apt-get update
 
 # Install necessary tools
-RUN apt-get install -y vim wget dialog net-tools
+RUN sudo apt-get install -y vim wget dialog net-tools
 
-RUN apt-get install -y nginx
+RUN sudo apt-get install -y nginx
 
 # Remove the default Nginx configuration file
-RUN rm -v /etc/nginx/nginx.conf
+RUN sudo rm -v /etc/nginx/nginx.conf
 
 # Copy a configuration file from the current directory
 ADD nginx.conf /etc/nginx/
